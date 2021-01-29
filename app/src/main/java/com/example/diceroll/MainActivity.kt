@@ -18,31 +18,31 @@ class MainActivity : AppCompatActivity() {
         btnRoll.setOnClickListener{
             rollDice()
         }
-
     }
     private fun rollDice(){
-        fun check(a: Int) = when(a){
-            1 -> R.drawable.dice_1
-            2 -> R.drawable.dice_2
-            3 -> R.drawable.dice_3
-            4 -> R.drawable.dice_4
-            5 -> R.drawable.dice_5
-            6 -> R.drawable.dice_6
-            else -> R.drawable.empty_dice
+        fun getViewDrawableByName(name: String): Int =
+                try {
+                    R.drawable::class.java.getField(name).getInt(null)
+                } catch (e: NoSuchFieldException){
+                    0
+                }
+        fun getViewIdByName(name: String): Int? =
+                try {
+                    R.id::class.java.getField(name).getInt(null)
+                } catch (e: NoSuchFieldException){
+                    null
+                }
+        val imgView = arrayOfNulls<ImageView>(10)
+        var sum = 0
+        for (i in 0..2){
+            val id = getViewIdByName("dice_image$i")
+            id?: continue
+            imgView[i] = findViewById<ImageView>(id)
+            val random = Random().nextInt(6)+1
+            sum+=random
+            imgView[i]?.setImageResource(getViewDrawableByName("dice_$random"))
         }
-        val randomeInt1 = Random().nextInt(6)+1
-        val diceImageView0 = findViewById<ImageView>(R.id.dice_image0)
-        diceImageView0.setImageResource(check(randomeInt1))
-
-        val randomeInt2 = Random().nextInt(6)+1
-        val diceImageView1 = findViewById<ImageView>(R.id.dice_image1)
-        diceImageView1.setImageResource(check(randomeInt2))
-
-        val randomeInt3 = Random().nextInt(6)+1
-        val diceImageView2 = findViewById<ImageView>(R.id.dice_image2)
-        diceImageView2.setImageResource(check(randomeInt3))
-
         val result = findViewById<TextView>(R.id.tvResult)
-        result.setText((randomeInt1+randomeInt2+randomeInt3).toString())
+        result.setText(sum.toString())
     }
 }
