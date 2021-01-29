@@ -20,18 +20,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun rollDice(){
-        fun getViewDrawableByName(name: String): Int =
-                try {
-                    R.drawable::class.java.getField(name).getInt(null)
-                } catch (e: NoSuchFieldException){
-                    0
-                }
-        fun getViewIdByName(name: String): Int? =
-                try {
-                    R.id::class.java.getField(name).getInt(null)
-                } catch (e: NoSuchFieldException){
-                    null
-                }
+        fun getViewDrawableByName(name: String): Int = R.drawable::class.java.getField(name).getInt(null)
+        fun getViewIdByName(name: String): Int = R.id::class.java.getField(name).getInt(null)
         val imgView = arrayOfNulls<ImageView>(10)
         var sum = 0
         for (i in 0..2){
